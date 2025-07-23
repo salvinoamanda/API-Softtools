@@ -1,0 +1,45 @@
+INSERT INTO Usuario (Nome, Email, Senha, Telefone, Estado)
+VALUES ('Lucas Andrade', 'lucasandrade@gmail.com', 'senha001', '(11) 91234-5671', 'São Paulo'),
+	   ('Mariana Lopes', 'marianalopes@gmail.com', 'senha002', '(21) 92345-6782', 'Rio de Janeiro'),
+	   ('Bruno Ferreira', 'brunoferreira@gmail.com', 'senha003', '(31) 93456-7893', 'Minas Gerais'),
+	   ('Aline Costa', 'alinecosta@gmail.com', 'senha004', '(67) 94567-8904', 'Mato Grosso do Sul'),
+	   ('Tiago Ramos', 'tiagoramos@gmail.com', 'senha005', '(51) 95678-9015', 'Rio Grande do Sul'),
+	   ('Camila Rocha', 'camilarocha@gmail.com', 'senha006', '(61) 96789-0126', 'Distrito Federal'),
+	   ('Felipe Martins', 'felipemartins@gmail.com', 'senha007', '(71) 97890-1237', 'Bahia'),
+	   ('Juliana Souza', 'julianasouza@gmail.com', 'senha008', '(81) 98901-2348', 'Pernambuco'),
+	   ('Rafael Lima', 'rafaellima@gmail.com', 'senha009', '(91) 99012-3459', 'Pará'),
+	   ('Tatiane Alves', 'tatianealves@gmail.com', 'senha010', '(85) 90123-4560', 'Ceará'),
+	   ('Diego Almeida', 'diegoalmeida@gmail.com', 'senha011', '(62) 91234-5671', 'Goiás'),
+	   ('Larissa Pires', 'larissapires@gmail.com', 'senha012', '(82) 92345-6782', 'Alagoas'),
+	   ('Gabriel Nogueira', 'gabrielnogueira@gmail.com', 'senha013', '(95) 93456-7893', 'Roraima'),
+	   ('Natália Monteiro', 'nataliamonteiro@gmail.com', 'senha014', '(96) 94567-8904', 'Amapá'),
+	   ('João Victor', 'joaovictor@gmail.com', 'senha015', '(92) 95678-9015', 'Amazonas');
+
+INSERT INTO Ferramenta (Nome, Proprietario, Diaria, Descricao, Status, Categoria, Chave_pix, Avaliacao, Id_propri)
+VALUES ('Furadeira', 'Lucas Andrade', 25.00, 'Ferramenta elétrica para perfuração de superfícies', 'Disponível', 'Elétricas', 'lucasandrade@gmail.com', 5, 1),
+	   ('Martelo', 'Mariana Lopes', 5.00, 'Martelo resistente para uso geral', 'Alugada', 'Manuais', '(21) 92345-6782', 4, 2),
+	   ('Alicate', 'Bruno Ferreira', 6.00, 'Alicate universal com isolamento', 'Disponível', 'Manuais', '123.456.789-00', 4, 3),
+	   ('Chave de fenda', 'Bruno Ferreira', 8.00, 'Chave de fenda com cabo emborrachado', 'Disponível', 'Manuais', 'brunoferreira@gmail.com', 3, 3),
+	   ('Lixadeira', 'Aline Costa', 30.00, 'Lixadeira elétrica para acabamentos finos', 'Disponível', 'Elétricas', '111.222.333-44', 5, 4),
+	   ('Serra', 'Tiago Ramos', 60.00, 'Serra circular portátil', 'Alugada', 'Elétricas', '(51) 95678-9015', 3, 5),
+	   ('Chave inglesa', 'Tiago Ramos', 5.00, 'Chave ajustável de aço carbono', 'Disponível', 'Manuais', 'tiagoramos@gmail.com', 4, 5),
+	   ('Trena', 'Felipe Martins', 6.00, 'Trena de 5 metros com trava automática', 'Disponível', 'De medição', 'felipemartins@gmail.com', 5, 7);
+
+INSERT INTO Fotos (Id_prod, Link_foto)
+VALUES (2, 'Fotos/Furadeira/furadeira_part1.webp'),
+	   (2, 'Fotos/Furadeira/furadeira_part2.webp'),
+	   (2, 'Fotos/Furadeira/furadeira_part3.webp'),
+	   (3, 'Fotos/Martelo/martelo_part1.webp'),
+	   (3, 'Fotos/Martelo/martelo_part2.webp'),
+	   (4, 'Fotos/Alicate/alicate_part1.webp'),
+	   (5, 'Fotos/Chave de fenda/chave_fenda_part1.webp'),
+	   (5, 'Fotos/Chave de fenda/chave_fenda_part2.webp'),
+	   (6, 'Fotos/Lixadeira/lixadeira_part1.webp'),
+	   (6, 'Fotos/Lixadeira/lixadeira_part2.webp'),
+	   (7, 'Fotos/Serra/serra_part1.webp'),
+	   (7, 'Fotos/Serra/serra_part2.webp'),
+	   (7, 'Fotos/Serra/serra_part3.webp'),
+	   (7, 'Fotos/Serra/serra_part4.webp'),
+	   (8, 'Fotos/Chave inglesa/chave_inglesa_part1.webp'),
+	   (8, 'Fotos/Chave inglesa/chave_inglesa_part2.webp'),
+	   (9, 'Fotos/Trena/trena_part1.webp');
