@@ -1,10 +1,9 @@
 from sqlalchemy import Integer, Date, Boolean
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 from datetime import datetime
-from typing import List
-from src.myapp.models.Ferramentas_pedido import Ferramentas_pedido
+from src.myapp.database import Base
 
-class Pedido:
+class Pedido(Base):
 
     __tablename__ = "pedido"
 
@@ -13,5 +12,3 @@ class Pedido:
     data_inicio: Mapped[datetime] = mapped_column(Date, nullable=False)
     data_devolucao: Mapped[datetime] = mapped_column(Date, nullable=False)
     alugada: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
-
-    ferramentas: Mapped[List[Ferramentas_pedido]] = relationship(back_populates="pedido")

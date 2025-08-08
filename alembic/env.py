@@ -15,13 +15,20 @@ raiz_projeto = Path(__file__).resolve().parent.parent
 sys.path.insert(0, raiz_projeto)
 
 from src.myapp.database import Base
+from src.myapp.models.Carrinho import carrinho
+from src.myapp.models.Ferramenta import Ferramenta
+from src.myapp.models.Ferramentas_pedido import Ferramentas_pedido
+from src.myapp.models.Foto import Foto
+from src.myapp.models.Historico_aluguel import Historico_aluguel
+from src.myapp.models.Pedido import Pedido
+from src.myapp.models.Usuario import Usuario
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 load_dotenv()
-config.set_main_option("sqlalchemy", os.getenv("CONEXAO_DB"))
+config.set_main_option("sqlalchemy.url", os.getenv("DB_URL"))
 
 
 # Interpret the config file for Python logging.

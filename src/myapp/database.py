@@ -15,5 +15,5 @@ def get_session():
         HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
                       detail="Erro ao conectar com o banco de dados")
         
-def Base(DeclarativeBase):
+class Base(DeclarativeBase):
     pass

@@ -17,5 +17,5 @@ class Historico_aluguel(Base):
     id_produto: Mapped[int] = mapped_column(ForeignKey("ferramenta.id"), nullable=False)
     timestamp: Mapped[datetime] = mapped_column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     
-    locatario : Mapped[Usuario] = relationship(back_populates="historicoAlugueis")
-    produtoAlugado: Mapped[Ferramenta] = relationship(back_populates="historicoAlugado")
+    cliente : Mapped[Usuario] = relationship('Usuario', backref='historico_aluguel')
+    produto: Mapped[Ferramenta] = relationship('Ferramenta')

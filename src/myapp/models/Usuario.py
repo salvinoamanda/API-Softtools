@@ -1,9 +1,8 @@
 from src.myapp.database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer
-from src.myapp.models.Ferramenta import Ferramenta
 from typing import List
-from src.myapp.models.Historico_aluguel import Historico_aluguel
+from src.myapp.models.Pedido import Pedido
 
 class Usuario(Base):
     
@@ -14,10 +13,7 @@ class Usuario(Base):
     email: Mapped[str] = mapped_column(String(200), unique=True, nullable=False)
     senha: Mapped[str] = mapped_column(String(200), nullable=False)
     telefone: Mapped[str] = mapped_column(String(15))
-
-    ferramentas: Mapped[list[Ferramenta]] = relationship(back_populates="propietario_ferramentas")
     
-    historicoAlugueis: Mapped[List[Historico_aluguel]] = relationship(back_populates="locatario")
+    carrinho: Mapped[List[Pedido]] = relationship('Pedido', secondary='carrinho', backref='usuario_alugou')
 
-    
 

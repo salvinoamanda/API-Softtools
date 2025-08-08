@@ -10,5 +10,5 @@ class Foto(Base):
     id_ferramenta: Mapped[int] = mapped_column(ForeignKey("ferramenta.id"), nullable=False)
     link_foto: Mapped[str] = mapped_column(Text, nullable=False)
 
-    ferramenta : Mapped[Ferramenta] = relationship(back_populates="fotos")
+    ferramenta : Mapped[Ferramenta] = relationship('Ferramenta', backref='fotos')
     

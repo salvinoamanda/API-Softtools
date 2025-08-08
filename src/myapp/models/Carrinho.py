@@ -5,12 +5,12 @@
 					   FOREIGN KEY (Id_cliente) REFERENCES Usuario(Id_usuario),
 					   FOREIGN KEY (Id_pedi) REFERENCES Pedido(Id_pedido));'''
 
-from sqlalchemy import ForeignKey, Integer
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import ForeignKey, Integer, Table, Column
+from src.myapp.database import Base
 
-class Carrinho:
-    id_cliente: Mapped[int] = mapped_column(ForeignKey("usuario.id"), primary_key=True)
-    id_pedido: Mapped[int] = mapped_column(ForeignKey("pedido.id"), primary_key=True)
-	
 
 	
+carrinho = Table('carrinho', 
+                 Base.metadata,
+                 Column('id_cliente', Integer, ForeignKey("usuario.id"), primary_key=True),
+                 Column('id_pedido', Integer, ForeignKey("pedido.id"), primary_key=True))
