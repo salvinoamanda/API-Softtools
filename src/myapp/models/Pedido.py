@@ -7,7 +7,7 @@ class Pedido(Base):
 
     __tablename__ = "pedido"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     quantidade_dias : Mapped[int] = mapped_column(Integer, nullable=False)
     data_inicio: Mapped[datetime] = mapped_column(Date, nullable=False)
     data_devolucao: Mapped[datetime] = mapped_column(Date, nullable=False)

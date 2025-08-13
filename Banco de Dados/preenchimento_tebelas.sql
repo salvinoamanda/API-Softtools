@@ -1,4 +1,4 @@
-INSERT INTO Usuario (Nome, Email, Senha, Telefone, Estado)
+INSERT INTO Usuario (Nome, Email, Senha, Telefone, "estado")
 VALUES ('Lucas Andrade', 'lucasandrade@gmail.com', 'senha001', '(11) 91234-5671', 'São Paulo'),
 	   ('Mariana Lopes', 'marianalopes@gmail.com', 'senha002', '(21) 92345-6782', 'Rio de Janeiro'),
 	   ('Bruno Ferreira', 'brunoferreira@gmail.com', 'senha003', '(31) 93456-7893', 'Minas Gerais'),

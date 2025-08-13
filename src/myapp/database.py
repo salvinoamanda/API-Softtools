@@ -10,7 +10,7 @@ engine = create_engine(os.getenv("DB_URL"))
 def get_session():
     try:
         Session = sessionmaker(bind=engine)
-        return Session
+        return Session()
     except:
         HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
                       detail="Erro ao conectar com o banco de dados")

@@ -1,6 +1,6 @@
 from src.myapp.database import Base
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Integer, Text, DECIMAL, Enum as sqlalchemy_enum, ForeignKey
+from sqlalchemy import String, Integer, Text, DECIMAL, Enum as sqlalchemy_enum, ForeignKey, text
 from decimal import Decimal
 from enum import Enum
 
@@ -41,5 +41,5 @@ class Ferramenta(Base):
     categoria: Mapped[str] = mapped_column(sqlalchemy_enum(CategoriaFerramenta), nullable=False)
     chave_pix: Mapped[str] = mapped_column(Text, nullable=False)
     avaliacao: Mapped[int] = mapped_column(Integer, default=0)
-    quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0)
-    id_propietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
+    quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0, nullable=True)
+    id_proprietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
