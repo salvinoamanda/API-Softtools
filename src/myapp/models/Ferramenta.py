@@ -1,8 +1,9 @@
 from src.myapp.database import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer, Text, DECIMAL, Enum as sqlalchemy_enum, ForeignKey, text
 from decimal import Decimal
 from enum import Enum
+from src.myapp.models.Usuario import Usuario
 
 
 '''CREATE TABLE Ferramenta (Id_produto SERIAL,
@@ -43,3 +44,5 @@ class Ferramenta(Base):
     avaliacao: Mapped[int] = mapped_column(Integer, default=0)
     quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0, nullable=True)
     id_proprietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
+
+    proprietario : Mapped[Usuario] = relationship('Usuario', backref='ferramentas')
