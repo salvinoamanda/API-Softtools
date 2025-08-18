@@ -1,45 +1,103 @@
-INSERT INTO Usuario (Nome, Email, Senha, Telefone, "estado")
-VALUES ('Lucas Andrade', 'lucasandrade@gmail.com', 'senha001', '(11) 91234-5671', 'São Paulo'),
-	   ('Mariana Lopes', 'marianalopes@gmail.com', 'senha002', '(21) 92345-6782', 'Rio de Janeiro'),
-	   ('Bruno Ferreira', 'brunoferreira@gmail.com', 'senha003', '(31) 93456-7893', 'Minas Gerais'),
-	   ('Aline Costa', 'alinecosta@gmail.com', 'senha004', '(67) 94567-8904', 'Mato Grosso do Sul'),
-	   ('Tiago Ramos', 'tiagoramos@gmail.com', 'senha005', '(51) 95678-9015', 'Rio Grande do Sul'),
-	   ('Camila Rocha', 'camilarocha@gmail.com', 'senha006', '(61) 96789-0126', 'Distrito Federal'),
-	   ('Felipe Martins', 'felipemartins@gmail.com', 'senha007', '(71) 97890-1237', 'Bahia'),
-	   ('Juliana Souza', 'julianasouza@gmail.com', 'senha008', '(81) 98901-2348', 'Pernambuco'),
-	   ('Rafael Lima', 'rafaellima@gmail.com', 'senha009', '(91) 99012-3459', 'Pará'),
-	   ('Tatiane Alves', 'tatianealves@gmail.com', 'senha010', '(85) 90123-4560', 'Ceará'),
-	   ('Diego Almeida', 'diegoalmeida@gmail.com', 'senha011', '(62) 91234-5671', 'Goiás'),
-	   ('Larissa Pires', 'larissapires@gmail.com', 'senha012', '(82) 92345-6782', 'Alagoas'),
-	   ('Gabriel Nogueira', 'gabrielnogueira@gmail.com', 'senha013', '(95) 93456-7893', 'Roraima'),
-	   ('Natália Monteiro', 'nataliamonteiro@gmail.com', 'senha014', '(96) 94567-8904', 'Amapá'),
-	   ('João Victor', 'joaovictor@gmail.com', 'senha015', '(92) 95678-9015', 'Amazonas');
 
-INSERT INTO Ferramenta (Nome, Proprietario, Diaria, Descricao, Status, Categoria, Chave_pix, Avaliacao, Id_propri)
-VALUES ('Furadeira', 'Lucas Andrade', 25.00, 'Ferramenta elétrica para perfuração de superfícies', 'Disponível', 'Elétricas', 'lucasandrade@gmail.com', 5, 1),
-	   ('Martelo', 'Mariana Lopes', 5.00, 'Martelo resistente para uso geral', 'Alugada', 'Manuais', '(21) 92345-6782', 4, 2),
-	   ('Alicate', 'Bruno Ferreira', 6.00, 'Alicate universal com isolamento', 'Disponível', 'Manuais', '123.456.789-00', 4, 3),
-	   ('Chave de fenda', 'Bruno Ferreira', 8.00, 'Chave de fenda com cabo emborrachado', 'Disponível', 'Manuais', 'brunoferreira@gmail.com', 3, 3),
-	   ('Lixadeira', 'Aline Costa', 30.00, 'Lixadeira elétrica para acabamentos finos', 'Disponível', 'Elétricas', '111.222.333-44', 5, 4),
-	   ('Serra', 'Tiago Ramos', 60.00, 'Serra circular portátil', 'Alugada', 'Elétricas', '(51) 95678-9015', 3, 5),
-	   ('Chave inglesa', 'Tiago Ramos', 5.00, 'Chave ajustável de aço carbono', 'Disponível', 'Manuais', 'tiagoramos@gmail.com', 4, 5),
-	   ('Trena', 'Felipe Martins', 6.00, 'Trena de 5 metros com trava automática', 'Disponível', 'De medição', 'felipemartins@gmail.com', 5, 7);
 
-INSERT INTO Fotos (Id_prod, Link_foto)
-VALUES (2, 'Fotos/Furadeira/furadeira_part1.webp'),
-	   (2, 'Fotos/Furadeira/furadeira_part2.webp'),
-	   (2, 'Fotos/Furadeira/furadeira_part3.webp'),
-	   (3, 'Fotos/Martelo/martelo_part1.webp'),
-	   (3, 'Fotos/Martelo/martelo_part2.webp'),
-	   (4, 'Fotos/Alicate/alicate_part1.webp'),
-	   (5, 'Fotos/Chave de fenda/chave_fenda_part1.webp'),
-	   (5, 'Fotos/Chave de fenda/chave_fenda_part2.webp'),
-	   (6, 'Fotos/Lixadeira/lixadeira_part1.webp'),
-	   (6, 'Fotos/Lixadeira/lixadeira_part2.webp'),
-	   (7, 'Fotos/Serra/serra_part1.webp'),
-	   (7, 'Fotos/Serra/serra_part2.webp'),
-	   (7, 'Fotos/Serra/serra_part3.webp'),
-	   (7, 'Fotos/Serra/serra_part4.webp'),
-	   (8, 'Fotos/Chave inglesa/chave_inglesa_part1.webp'),
-	   (8, 'Fotos/Chave inglesa/chave_inglesa_part2.webp'),
-	   (9, 'Fotos/Trena/trena_part1.webp');
+-- 1) USUARIO (10+)
+INSERT INTO usuario (nome, email, senha, telefone, estado) VALUES
+('Ana Souza',       'ana@example.com',       'hash_senha_1',  '(67)90000-0001', 'MS'),
+('Bruno Lima',      'bruno@example.com',     'hash_senha_2',  '(67)90000-0002', 'MS'),
+('Carla Mendes',    'carla@example.com',     'hash_senha_3',  '(67)90000-0003', 'MS'),
+('Diego Alves',     'diego@example.com',     'hash_senha_4',  '(67)90000-0004', 'MS'),
+('Elisa Silva',     'elisa@example.com',     'hash_senha_5',  '(67)90000-0005', 'MS'),
+('Felipe Rocha',    'felipe@example.com',    'hash_senha_6',  '(67)90000-0006', 'MS'),
+('Gabriela Reis',   'gabriela@example.com',  'hash_senha_7',  '(67)90000-0007', 'MS'),
+('Hugo Pereira',    'hugo@example.com',      'hash_senha_8',  '(67)90000-0008', 'MS'),
+('Isabela Torres',  'isabela@example.com',   'hash_senha_9',  '(67)90000-0009', 'MS'),
+('João Martins',    'joao@example.com',      'hash_senha_10', '(67)90000-0010', 'MS');
+
+-- 2) PEDIDO (10+)
+-- datas coerentes com quantidade_dias
+INSERT INTO pedido (quantidade_dias, data_inicio, data_devolucao, alugada) VALUES
+( 3, '2025-07-01', '2025-07-04', TRUE),
+( 5, '2025-07-02', '2025-07-07', TRUE),
+( 2, '2025-07-05', '2025-07-07', TRUE),
+(10, '2025-07-10', '2025-07-20', TRUE),
+( 7, '2025-07-12', '2025-07-19', TRUE),
+( 4, '2025-07-15', '2025-07-19', TRUE),
+( 1, '2025-07-20', '2025-07-21', TRUE),
+(14, '2025-07-21', '2025-08-04', TRUE),
+( 6, '2025-07-25', '2025-07-31', TRUE),
+( 3, '2025-08-01', '2025-08-04', TRUE);
+
+-- 3) FERRAMENTA (10+)
+-- status e categoria usam os valores do Enum definidos no ORM: DISPONIVEL|ALUGADA e MANUAL|ELETRICA|PNEUMATICA|HIDRAULICA|MEDICAO
+INSERT INTO ferramenta
+(nome, diaria, descricao, status, categoria, chave_pix, avaliacao, quantidade_avaliacoes, id_proprietario)
+VALUES
+('Furadeira Impacto 600W',      25.00, 'Furadeira para alvenaria e madeira',        'DISPONIVEL', 'ELETRICA',   'chave_pix_ana',    5, 12, 1),
+('Parafusadeira 12V',           20.00, 'Parafusadeira leve com bateria',            'DISPONIVEL', 'ELETRICA',   'chave_pix_bruno',  4,  8, 2),
+('Marreta 1kg',                 10.00, 'Marreta manual para demolição leve',       'DISPONIVEL', 'MANUAL',     'chave_pix_carla',  4, 10, 3),
+('Compressor de Ar 24L',        45.00, 'Compressor para ferramentas pneumáticas',   'ALUGADA',    'PNEUMATICA', 'chave_pix_diego',  5, 20, 4),
+('Esmerilhadeira 900W',         30.00, 'Lixamento e corte de metal',               'DISPONIVEL', 'ELETRICA',   'chave_pix_elisa',  4, 14, 5),
+('Chave de Torque',             18.00, 'Aperto controlado de parafusos',           'DISPONIVEL', 'MANUAL',     'chave_pix_felipe', 5,  6, 6),
+('Macaco Hidráulico 2T',        22.00, 'Elevação de veículos leves',               'DISPONIVEL', 'HIDRAULICA', 'chave_pix_gabri',  4,  7, 7),
+('Pregadeira Pneumática',       40.00, 'Aplicação de pregos em madeira',           'ALUGADA',    'PNEUMATICA', 'chave_pix_hugo',   5, 11, 8),
+('Paquímetro 150mm',            12.00, 'Medição de precisão',                      'DISPONIVEL', 'MEDICAO',    'chave_pix_isabela',4,  9, 9),
+('Serra Circular 1400W',        35.00, 'Corte em madeira com guia',                'DISPONIVEL', 'ELETRICA',   'chave_pix_joao',   5, 15, 10);
+
+-- 4) FOTO (10+) – cada foto aponta para uma ferramenta existente
+INSERT INTO "Foto" (id_ferramenta, link_foto) VALUES
+(91, 'https://cdn.exemplo/ferramentas/1_a.jpg'),
+(91, 'https://cdn.exemplo/ferramentas/1_b.jpg'),
+(92, 'https://cdn.exemplo/ferramentas/2_a.jpg'),
+(93, 'https://cdn.exemplo/ferramentas/3_a.jpg'),
+(94, 'https://cdn.exemplo/ferramentas/4_a.jpg'),
+(95, 'https://cdn.exemplo/ferramentas/5_a.jpg'),
+(96, 'https://cdn.exemplo/ferramentas/6_a.jpg'),
+(97, 'https://cdn.exemplo/ferramentas/7_a.jpg'),
+(98, 'https://cdn.exemplo/ferramentas/8_a.jpg'),
+(99, 'https://cdn.exemplo/ferramentas/9_a.jpg');
+
+-- 5) HISTORICO_ALUGUEL (10+) – referencia usuario.id e ferramenta.id
+INSERT INTO historico_aluguel ( id_cliente, id_produto, timestamp) VALUES
+(2, 94,  '2025-07-11 10:00:00+00'),
+(3, 95,  '2025-07-13 09:30:00+00'),
+(1, 92,  '2025-07-03 14:20:00+00'),
+(4, 98,  '2025-07-22 08:45:00+00'),
+(5, 91,  '2025-07-06 16:10:00+00'),
+(6, 97,  '2025-07-18 11:05:00+00'),
+(7, 96,  '2025-07-19 17:50:00+00'),
+(8, 100, '2025-07-28 13:15:00+00'),
+(9, 99,  '2025-07-30 15:40:00+00'),
+(10,93,  '2025-08-02 12:00:00+00');
+
+
+-- 6) FERRAMENTAS_PEDIDO (10+) – pares (id_ferramenta, id_pedido) devem ser únicos
+INSERT INTO ferramentas_pedido (id_ferramenta, id_pedido, quantidade) VALUES
+(91,71,  1),
+(92,71,  2),
+(93,72,  1),
+(94,73,  1),
+(95,74,  2),
+(96,75,  1),
+(97,76,  1),
+(98,77,  1),
+(99,78,  3),
+(100, 79,  1),
+(91,80, 2);
+
+
+-- 7) CARRINHO (10+) – associação usuario x pedido (pares únicos)
+INSERT INTO carrinho (id_cliente, id_pedido) VALUES
+(1,71),
+(2,72),
+(3,73),
+(4,74),
+(5,75),
+(6,76),
+(7,77),
+(8,78),
+(9,79),
+(10, 80);
+
+
+
+
