@@ -15,7 +15,7 @@ raiz_projeto = Path(__file__).resolve().parent.parent
 sys.path.insert(0, raiz_projeto)
 
 from src.myapp.database import Base
-from src.myapp.models.Carrinho import carrinho
+from src.myapp.models.ItemCarrinho import ItemCarrinho
 from src.myapp.models.Ferramenta import Ferramenta
 from src.myapp.models.Ferramentas_pedido import Ferramentas_pedido
 from src.myapp.models.Foto import Foto

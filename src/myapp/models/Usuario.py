@@ -3,7 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Integer
 from typing import List
 from src.myapp.models.Pedido import Pedido
-from src.myapp.models.Carrinho import carrinho
+from src.myapp.models.ItemCarrinho import ItemCarrinho
 
 class Usuario(Base):
     
@@ -16,6 +16,9 @@ class Usuario(Base):
     telefone: Mapped[str] = mapped_column(String(15))
     estado : Mapped[str] = mapped_column(String(50), nullable=False)
     
-    carrinho: Mapped[List[Pedido]] = relationship('Pedido', secondary=carrinho, backref='usuario_alugou')
+    carrinho_items: Mapped[List[ItemCarrinho]] = relationship(
+    back_populates="usuario",
+    cascade="all, delete-orphan",
+    )
 
 
