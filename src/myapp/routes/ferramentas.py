@@ -12,5 +12,7 @@ ferramentas_router = APIRouter(prefix="/ferramentas")
 #Endpoints de ferramentas
 
 @ferramentas_router.get("/", response_model= List[FerramentaSchema])
-def getFerramentas(uf: str | None = None, secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
-    return readFerramentas(secao, uf)
+def getFerramentas(uf: str | None = None, status: str | None = None , 
+                   secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+    
+    return readFerramentas(secao, uf, status)

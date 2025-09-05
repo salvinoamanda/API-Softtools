@@ -1,17 +1,22 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, and_, or_
 from src.myapp.models.Ferramenta import Ferramenta
+from src.myapp.models.Ferramenta import StatusFerramenta
 from src.myapp.models.Usuario import Usuario
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema
+from typing import List
 
-def readFerramentas(secao: Session, uf: str | None):
-
+def string_to_status(status: str):
+    if status == StatusFerramenta.DISPONIVEL.name:
+        return StatusFerramenta.DISPONIVEL
     
+    return StatusFerramenta.ALUGADA
 
-    if(uf is not None):
-        statement = select(Ferramenta).join(Ferramenta.proprietario).where(Usuario.estado == uf)
-    else:
-        statement = select(Ferramenta)
+def readFerramentas(secao: Session, uf: str | None, status : str | None = None) -> List[FerramentaSchema]:
+
+    statement = select(Ferramenta).join(Ferramenta.proprietario).where(and_(or_(Usuario.estado == uf, uf is None), 
+                                                                            or_(Ferramenta.status == string_to_status(status), status is None)))
+ 
 
     ferramentas = secao.scalars(statement).all()
 
