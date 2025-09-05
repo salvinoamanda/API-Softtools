@@ -42,3 +42,13 @@ class FerramentaCadastroSchema(BaseModel):
     categoria: str
     chave_pix: str
     quantidade_estoque: int = 1
+
+class FerramentaAtualizacaoSchema(BaseModel):
+    id_ferramenta: int
+    nome: Optional[str] = None
+    diaria: Optional[Decimal] = None
+    descricao: Optional[str] = None
+    status: Optional[str] = None
+    categoria: Optional[str] = None
+    chave_pix: Optional[str] = None
+    quantidade_estoque: Optional[int] = None

@@ -5,21 +5,6 @@ from decimal import Decimal
 from enum import Enum
 from src.myapp.models.Usuario import Usuario
 
-
-'''CREATE TABLE Ferramenta (Id_produto SERIAL,
-						 Nome TEXT NOT NULL,
-						 Proprietario TEXT NOT NULL,
-						 Diaria DECIMAL(10,2),
-						 Descricao TEXT,
-						 Status VARCHAR(10) NOT NULL CHECK (LOWER (Status) IN ('disponivel', 'alugada')),
-						 Categoria VARCHAR(11) CHECK (LOWER (Categoria) IN ('manuais', 'elétricas', 'pneumáticas', 'hidráulicas', 'de medição')),
-						 Chave_pix TEXT NOT NULL,
-						 Avaliacao INTEGER,
-						 Id_propri INTEGER,
-
-						 PRIMARY KEY (Id_produto),
-						 FOREIGN KEY (Id_propri) REFERENCES Usuario(Id_usuario));'''
-
 class StatusFerramenta(Enum):
     DISPONIVEL = 0
     ALUGADA = 1
