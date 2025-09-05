@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import Session
+from sqlalchemy.orm import Session
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from src.myapp.services.carrinho import adicionarItem

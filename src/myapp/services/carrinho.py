@@ -1,5 +1,6 @@
-from sqlalchemy import Session, and_
-from myapp.models.ItemCarrinho import ItemCarrinho
+from sqlalchemy import and_
+from sqlalchemy.orm import Session
+from src.myapp.models.ItemCarrinho import ItemCarrinho
 
 def adicionarItem(id_usuario:int, id_item: int, secao: Session):
 
