@@ -1,6 +1,6 @@
 from src.myapp.database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Integer, Text, DECIMAL, Enum as sqlalchemy_enum, ForeignKey, text
+from sqlalchemy import String, Integer, Text, DECIMAL, Enum as sqlalchemy_enum, ForeignKey, Boolean
 from decimal import Decimal
 from enum import Enum
 from src.myapp.models.Usuario import Usuario
@@ -30,6 +30,7 @@ class Ferramenta(Base):
     quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0, nullable=True)
     id_proprietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
     quantidade_estoque: Mapped[int] = mapped_column(Integer, default=1)
+    ativo: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
     proprietario : Mapped[Usuario] = relationship('Usuario', backref='ferramentas')
