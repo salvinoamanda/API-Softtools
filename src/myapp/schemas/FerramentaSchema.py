@@ -23,3 +23,10 @@ class FerramentaSchema(BaseModel):
     avaliacao: int
     quantidade_avaliacoes: int
     id_proprietario: int
+
+
+class FerramentaPreviewSchema(BaseModel):
+    id: int
+    nome: str
+    diaria: Decimal
+    categoria: str
