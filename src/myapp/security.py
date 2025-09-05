@@ -9,7 +9,7 @@ from fastapi import HTTPException, status, Header
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 __pwd_context = PasswordHash.recommended()
 

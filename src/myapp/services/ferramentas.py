@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, or_
-from src.myapp.models.Ferramenta import Ferramenta
-from src.myapp.models.Ferramenta import StatusFerramenta
+from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaFerramenta
 from src.myapp.models.Usuario import Usuario
-from src.myapp.schemas.FerramentaSchema import FerramentaSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema
 from typing import List
+from fastapi import status
 
 def string_to_status(status: str):
     if status == StatusFerramenta.DISPONIVEL.name:
@@ -32,3 +32,32 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
         quantidade_avaliacoes = ferramenta.quantidade_avaliacoes,
         id_proprietario = ferramenta.id_proprietario,
     ) , ferramentas))
+
+
+def str_to_categoria(string: str):
+    if string == 'MANUAL':
+        return CategoriaFerramenta.MANUAL
+    if string == 'ELETRICA':
+        return CategoriaFerramenta.ELETRICA
+    if string == 'PNEUMATICA':
+        return CategoriaFerramenta.PNEUMATICA
+    if string == 'HIDRAULICA':
+        return CategoriaFerramenta.HIDRAULICA
+    if string == 'MEDICAO':
+        return CategoriaFerramenta.MEDICAO
+
+    return None
+
+
+def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, secao: Session):
+
+    print(id_propietario)
+
+    novaFerramenta = Ferramenta(nome=dados.nome, diaria=dados.diaria,descricao=dados.descricao,
+               categoria=str_to_categoria(dados.categoria),chave_pix=dados.chave_pix,id_proprietario=id_propietario,
+               quantidade_estoque=dados.quantidade_estoque)
+    
+    secao.add(novaFerramenta)
+    secao.commit()
+
+    return status.HTTP_201_CREATED

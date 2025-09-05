@@ -1,5 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, BeforeValidator
 from decimal import Decimal
+from typing import Optional, Annotated
 
 '''id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 nome: Mapped[str] = mapped_column(String(100), nullable=False)
@@ -23,6 +24,7 @@ class FerramentaSchema(BaseModel):
     avaliacao: int
     quantidade_avaliacoes: int
     id_proprietario: int
+    quantidade_estoque: int
 
 
 class FerramentaPreviewSchema(BaseModel):
@@ -30,3 +32,13 @@ class FerramentaPreviewSchema(BaseModel):
     nome: str
     diaria: Decimal
     categoria: str
+
+
+
+class FerramentaCadastroSchema(BaseModel):
+    nome: str
+    diaria: Decimal
+    descricao: str
+    categoria: str
+    chave_pix: str
+    quantidade_estoque: int = 1

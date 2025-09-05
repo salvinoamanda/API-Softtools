@@ -44,5 +44,7 @@ class Ferramenta(Base):
     avaliacao: Mapped[int] = mapped_column(Integer, default=0)
     quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0, nullable=True)
     id_proprietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
+    quantidade_estoque: Mapped[int] = mapped_column(Integer, default=1)
+
 
     proprietario : Mapped[Usuario] = relationship('Usuario', backref='ferramentas')
