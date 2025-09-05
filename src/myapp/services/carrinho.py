@@ -1,5 +1,6 @@
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
 from src.myapp.models.ItemCarrinho import ItemCarrinho
 from src.myapp.schemas.CarrinhoSchema import CarrinhoSchema
 from src.myapp.schemas.CarrinhoSchema import ItemCarrinhoSchema
@@ -12,7 +13,7 @@ def adicionarItem(id_usuario:int, id_item: int, secao: Session):
                                                           ItemCarrinho.id_ferramenta == id_item)).first()
     
     if item:
-        item.quantidade += 1
+        return HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Este item já existe no carrinho.")
     else:
         item = ItemCarrinho(id_usuario=id_usuario, id_ferramenta=id_item)
 
@@ -23,23 +24,20 @@ def adicionarItem(id_usuario:int, id_item: int, secao: Session):
 
     return item
 
-def mapper_ferramenta_preview(ferramenta: Ferramenta, quantidadeItem: int) -> ItemCarrinhoSchema:
+def mapper_ferramenta_preview(ferramenta: Ferramenta) -> ItemCarrinhoSchema:
     preview = FerramentaPreviewSchema(id=ferramenta.id, nome=ferramenta.nome, 
                                    diaria=ferramenta.diaria, categoria=ferramenta.categoria)
     
-    valorTotalDiaria = ferramenta.diaria * quantidadeItem
 
-    return ItemCarrinhoSchema(ferramenta= preview, quantidade=quantidadeItem, valorTotalDiaria=valorTotalDiaria)
+    return ItemCarrinhoSchema(ferramenta= preview)
 
 
 def buscarCarrinho(idUsuario: int, secao:Session) -> CarrinhoSchema:
     itensCarrinho_model = secao.query(ItemCarrinho).filter(ItemCarrinho.id_usuario == idUsuario)
 
-    itensCarrinho_schema = list(map(lambda item: mapper_ferramenta_preview(item.ferramenta, item.quantidade), itensCarrinho_model))
+    itensCarrinho_schema = list(map(lambda item: mapper_ferramenta_preview(item.ferramenta), itensCarrinho_model))
 
-    valoresPreliminares = list(map(lambda preview: preview.valorTotalDiaria, itensCarrinho_schema))
-
-    return CarrinhoSchema(ferramentas=itensCarrinho_schema, valorTotalPreliminar= sum(valoresPreliminares))
+    return CarrinhoSchema(ferramentas=itensCarrinho_schema)
 
 
 def excluirFerramentaCarrinho(id_usuario: int, id_ferramenta:int, secao: Session):
@@ -50,6 +48,7 @@ def excluirFerramentaCarrinho(id_usuario: int, id_ferramenta:int, secao: Session
     if item:
         secao.delete(item)
         secao.commit()
+
         
 
 def limparCarrinho(id_usuario: int, secao: Session):

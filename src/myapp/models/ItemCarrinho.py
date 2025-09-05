@@ -8,7 +8,6 @@ class ItemCarrinho(Base):
 
     id_usuario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False, primary_key=True)
     id_ferramenta: Mapped[int] = mapped_column(ForeignKey("ferramenta.id"), nullable=False, primary_key=True)
-    quantidade: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
 
     ferramenta: Mapped["Ferramenta"] = relationship( "Ferramenta",
         foreign_keys=[id_ferramenta],
