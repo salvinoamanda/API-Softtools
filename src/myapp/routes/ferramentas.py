@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
@@ -24,9 +24,8 @@ def createFerramenta(dadosNovaFerramenta: FerramentaCadastroSchema, secao: Sessi
 
     return createNovaFerramenta(dadosNovaFerramenta, idUsuario, secao)
 
-@ferramentas_router.patch("/", response_model=FerramentaSchema)
+@ferramentas_router.patch("/", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
 def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session = Depends(get_session), token: str = Depends(auth_validation)):
-    
     idUsuario = getPayload(token)["id"]
 
     return atualizaFerramenta(idUsuario, dadosFerramenta, secao)

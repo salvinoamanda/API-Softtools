@@ -4,7 +4,7 @@ from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaF
 from src.myapp.models.Usuario import Usuario
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, FerramentaAtualizacaoSchema
 from typing import List
-from fastapi import status
+from fastapi import status, HTTPException
 
 def string_to_status(status: str):
     if status == StatusFerramenta.DISPONIVEL.name:
@@ -31,6 +31,7 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
         avaliacao = ferramenta.avaliacao,
         quantidade_avaliacoes = ferramenta.quantidade_avaliacoes,
         id_proprietario = ferramenta.id_proprietario,
+        quantidade_estoque= ferramenta.quantidade_estoque
     ) , ferramentas))
 
 
@@ -64,8 +65,12 @@ def atualizaFerramenta(id_usuario: int, dadosFerramenta: FerramentaAtualizacaoSc
 
     ferramenta = secao.query(Ferramenta).filter(dadosFerramenta.id_ferramenta == Ferramenta.id).first()
 
+    if ferramenta is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ferramenta não encontrada.")
+
+
     if ferramenta.id_proprietario != id_usuario:
-        return status.HTTP_401_UNAUTHORIZED
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário não autorizado para alterar esta ferramenta.")
     
 
     if dadosFerramenta.nome is not None:
@@ -89,11 +94,18 @@ def atualizaFerramenta(id_usuario: int, dadosFerramenta: FerramentaAtualizacaoSc
     if dadosFerramenta.quantidade_estoque is not None:
         ferramenta.quantidade_estoque = dadosFerramenta.quantidade_estoque
 
-    return FerramentaSchema(id_ferramenta = ferramenta.id,
+    secao.commit()
+    secao.refresh(ferramenta)
+    
+
+    return FerramentaSchema(id = ferramenta.id,
                             nome = ferramenta.nome,
                             diaria = ferramenta.diaria,
                             descricao = ferramenta.descricao,
                             status = ferramenta.status,
                             categoria = ferramenta.categoria,
                             chave_pix = ferramenta.chave_pix,
+                            avaliacao=ferramenta.avaliacao,
+                            quantidade_avaliacoes=ferramenta.quantidade_avaliacoes,
+                            id_proprietario= ferramenta.id_proprietario,
                             quantidade_estoque = ferramenta.quantidade_estoque)

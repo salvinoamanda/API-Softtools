@@ -83,10 +83,6 @@ def atualizarUsuario(dados: UsuarioAtualizacaoSchema, secao: Session) -> Usuario
         hash_senha = get_password_hash(dados.senha)
         usuario.senha = hash_senha
 
-    if dados.senha is not None:
-        hash_senha = get_password_hash(dados.senha)
-        usuario.senha = hash_senha
-    
 
     secao.commit()
     
