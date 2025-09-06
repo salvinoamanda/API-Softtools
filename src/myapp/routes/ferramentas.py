@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, status
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
-from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
-from src.myapp.services.ferramentas import readFerramentas, createNovaFerramenta, atualizaFerramenta
-
+from src.myapp.services.ferramentas import readFerramentas, createNovaFerramenta, atualizaFerramenta, avaliar
+from decimal import Decimal
 
 ferramentas_router = APIRouter(prefix="/ferramentas")
 
@@ -29,3 +29,8 @@ def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session 
     idUsuario = getPayload(token)["id"]
 
     return atualizaFerramenta(idUsuario, dadosFerramenta, secao)
+
+@ferramentas_router.post("/avaliar", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
+def avaliar_ferramenta(avaliacaoDados: AvaliacaoSchema, secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+
+   return avaliar(avaliacaoDados, secao)

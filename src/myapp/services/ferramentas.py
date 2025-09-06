@@ -2,9 +2,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, or_
 from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaFerramenta
 from src.myapp.models.Usuario import Usuario
-from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
 from fastapi import status, HTTPException
+from decimal import Decimal
 
 def string_to_status(status: str):
     if status == StatusFerramenta.DISPONIVEL.name:
@@ -97,6 +98,35 @@ def atualizaFerramenta(id_usuario: int, dadosFerramenta: FerramentaAtualizacaoSc
     secao.commit()
     secao.refresh(ferramenta)
     
+
+    return FerramentaSchema(id = ferramenta.id,
+                            nome = ferramenta.nome,
+                            diaria = ferramenta.diaria,
+                            descricao = ferramenta.descricao,
+                            status = ferramenta.status,
+                            categoria = ferramenta.categoria,
+                            chave_pix = ferramenta.chave_pix,
+                            avaliacao=ferramenta.avaliacao,
+                            quantidade_avaliacoes=ferramenta.quantidade_avaliacoes,
+                            id_proprietario= ferramenta.id_proprietario,
+                            quantidade_estoque = ferramenta.quantidade_estoque)
+
+def avaliar(dadosAvaliacao: AvaliacaoSchema, secao: Session):
+
+    ferramenta = secao.query(Ferramenta).filter(Ferramenta.id == dadosAvaliacao.id_ferramenta).first()
+
+    if ferramenta is None:
+        HTTPException(status_code= status.HTTP_404_NOT_FOUND, detail="Ferramenta não encontrada.")
+
+
+    nova_avaliacao = ((ferramenta.quantidade_avaliacoes * ferramenta.avaliacao) + dadosAvaliacao.avaliacao) / (ferramenta.quantidade_avaliacoes + 1)
+    
+    ferramenta.quantidade_avaliacoes += 1
+
+    ferramenta.avaliacao = nova_avaliacao
+
+    secao.commit()
+    secao.refresh(ferramenta)
 
     return FerramentaSchema(id = ferramenta.id,
                             nome = ferramenta.nome,

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, BeforeValidator
+from pydantic import BaseModel, field_validator
 from decimal import Decimal
 from typing import Optional, Annotated
 
@@ -21,7 +21,7 @@ class FerramentaSchema(BaseModel):
     status: str
     categoria: str
     chave_pix: str
-    avaliacao: int
+    avaliacao: Decimal
     quantidade_avaliacoes: int
     id_proprietario: int
     quantidade_estoque: int
@@ -52,3 +52,14 @@ class FerramentaAtualizacaoSchema(BaseModel):
     categoria: Optional[str] = None
     chave_pix: Optional[str] = None
     quantidade_estoque: Optional[int] = None
+
+class AvaliacaoSchema(BaseModel):
+    id_ferramenta: int
+    avaliacao: Decimal
+
+    @field_validator("avaliacao")
+    def avaliacao_zero_a_cinca(cls, v):
+        if v < 0 or v > 5:
+            raise ValueError("Avaliação deve ser entre 0 e 5")
+        
+        return v

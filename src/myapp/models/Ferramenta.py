@@ -26,7 +26,7 @@ class Ferramenta(Base):
     status: Mapped[str] = mapped_column(sqlalchemy_enum(StatusFerramenta), nullable= False, default = StatusFerramenta.DISPONIVEL)
     categoria: Mapped[str] = mapped_column(sqlalchemy_enum(CategoriaFerramenta), nullable=False)
     chave_pix: Mapped[str] = mapped_column(Text, nullable=False)
-    avaliacao: Mapped[int] = mapped_column(Integer, default=0)
+    avaliacao: Mapped[Decimal] = mapped_column(DECIMAL(10,2), default=0)
     quantidade_avaliacoes: Mapped[int] = mapped_column(Integer, default = 0, nullable=True)
     id_proprietario: Mapped[int] = mapped_column(ForeignKey("usuario.id"), nullable=False)
     quantidade_estoque: Mapped[int] = mapped_column(Integer, default=1)
