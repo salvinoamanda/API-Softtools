@@ -6,6 +6,7 @@ from src.myapp.routes.ferramentas import ferramentas_router
 from src.myapp.routes.usuarios import usuarios_router
 from src.myapp.routes.aluguel import aluguel_router
 from src.myapp.routes.carrinhos import carrinho_router
+from myapp.routes.historico_registro import historico_registro_router
 
 #Instancia da API
 app = FastAPI()
@@ -28,3 +29,4 @@ app.include_router(ferramentas_router)
 app.include_router(usuarios_router)
 app.include_router(aluguel_router)
 app.include_router(carrinho_router)
+app.include_router(historico_registro_router)
