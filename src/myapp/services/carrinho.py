@@ -42,8 +42,7 @@ def buscarCarrinho(idUsuario: int, secao:Session) -> CarrinhoSchema:
 
 def excluirFerramentaCarrinho(id_usuario: int, id_ferramenta:int, secao: Session):
 
-    item = secao.query(ItemCarrinho).filter(and_(ItemCarrinho.id_usuario == id_usuario, 
-                                                          ItemCarrinho.id_ferramenta == id_ferramenta)).first()
+    item = secao.query(ItemCarrinho).filter(and_(ItemCarrinho.id_usuario == id_usuario, ItemCarrinho.id_ferramenta == id_ferramenta)).first()
     
     if item:
         secao.delete(item)
@@ -54,5 +53,4 @@ def excluirFerramentaCarrinho(id_usuario: int, id_ferramenta:int, secao: Session
 def limparCarrinho(id_usuario: int, secao: Session):
     secao.query(ItemCarrinho).filter(ItemCarrinho.id_usuario == id_usuario).delete()
 
-    secao.commit()
-    
+    secao.commit()    

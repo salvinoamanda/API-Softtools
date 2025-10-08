@@ -33,6 +33,7 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
         quantidade_avaliacoes = ferramenta.quantidade_avaliacoes,
         id_proprietario = ferramenta.id_proprietario,
         quantidade_estoque= ferramenta.quantidade_estoque
+        quantidade_estoque= ferramenta.quantidade_estoque
     ) , ferramentas))
 
 

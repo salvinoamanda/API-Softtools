@@ -35,3 +35,6 @@ A **API SoftTools** centraliza toda a lógica de acesso e manipulação de dados
 
 - Este repositório é dedicado apenas ao **back-end** da aplicação.
 
+# Comando para rodar o servidor 
+uvicorn src.myapp.main:app --reload
+
