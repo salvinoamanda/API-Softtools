@@ -63,3 +63,7 @@ class AvaliacaoSchema(BaseModel):
             raise ValueError("Avaliação deve ser entre 0 e 5")
         
         return v
+    
+class FerramentaPedidoSchema(BaseModel):
+    id_ferramenta: int
+    quantidade: int
