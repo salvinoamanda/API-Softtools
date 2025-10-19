@@ -6,6 +6,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation
+from src.myapp.services.usuarios import excluirUsuario
+from src.myapp.services.usuarios import getAllUsuarios
 
 usuarios_router = APIRouter(prefix='/users')
 
@@ -29,3 +31,18 @@ async def put_usuarios(request : UsuarioAtualizacaoSchema,
                        _: str = Depends(auth_validation)):
     
     return atualizarUsuario(request, secao)
+
+# Excluir usuários
+@usuarios_router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_usuarios(idUsuario: int,
+                          secao: Session = Depends(get_session),
+                          _: str = Depends(auth_validation)):
+    
+    # Lógica para excluir o usuário
+    excluirUsuario(idUsuario, secao)
+    return None
+
+# Lista usuários do sistema
+@usuarios_router.get("/", response_model=list[UsuarioSchemaPublic], status_code=status.HTTP_200_OK)
+async def get_usuarios(secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+    return getAllUsuarios(secao)

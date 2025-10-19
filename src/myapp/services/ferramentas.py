@@ -139,3 +139,23 @@ def avaliar(dadosAvaliacao: AvaliacaoSchema, secao: Session):
                             quantidade_avaliacoes=ferramenta.quantidade_avaliacoes,
                             id_proprietario= ferramenta.id_proprietario,
                             quantidade_estoque = ferramenta.quantidade_estoque)
+
+# Busca ferramenta por ID
+def buscaFerramentaPorID(id: int, secao: Session) -> Ferramenta | None:
+
+    try:
+        ferramenta = secao.scalar(select(Ferramenta).where(Ferramenta.id == id))
+        if not ferramenta:   
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ferramenta não encontrada")
+        return ferramenta
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(status_code= status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Falha ao consultar o banco de dados.")
+
+# Função para excluir ferramenta
+def excluirFerramenta(idFerramenta: int, secao: Session):
+    ferramenta = buscaFerramentaPorID(idFerramenta, secao)
+
+    secao.delete(ferramenta)
+    secao.commit()

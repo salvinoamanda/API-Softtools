@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
-from myapp.services.historico import historico_registro
+from src.myapp.services.historico import historico_registro
 
 historico_registro_router = APIRouter(prefix="/historico_registro", tags=["Historico do Registro"])
 

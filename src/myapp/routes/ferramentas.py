@@ -6,6 +6,7 @@ from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadas
 from typing import List
 from src.myapp.services.ferramentas import readFerramentas, createNovaFerramenta, atualizaFerramenta, avaliar
 from decimal import Decimal
+from src.myapp.services.ferramentas import excluirFerramenta
 
 ferramentas_router = APIRouter(prefix="/ferramentas")
 
@@ -34,3 +35,10 @@ def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session 
 def avaliar_ferramenta(avaliacaoDados: AvaliacaoSchema, secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
 
    return avaliar(avaliacaoDados, secao)
+
+@ferramentas_router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+def excluir_ferramenta(idFerramenta: int,
+                       secao: Session = Depends(get_session),
+                       _: str = Depends(auth_validation)):
+    excluirFerramenta(idFerramenta, secao)
+    return None
