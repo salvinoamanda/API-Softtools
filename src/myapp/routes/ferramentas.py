@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, UploadFile, File
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
@@ -19,11 +19,14 @@ def getFerramentas(uf: str | None = None, status: str | None = None ,
     return readFerramentas(secao, uf, status)
 
 @ferramentas_router.post("/")
-def createFerramenta(dadosNovaFerramenta: FerramentaCadastroSchema, secao: Session = Depends(get_session), token: str = Depends(auth_validation)):
+def createFerramenta(dadosNovaFerramenta: FerramentaCadastroSchema, 
+                     fotos: List[UploadFile] = File(default_factory=list),
+                     secao: Session = Depends(get_session), 
+                     token: str = Depends(auth_validation)):
 
     idUsuario = getPayload(token)["id"]
 
-    return createNovaFerramenta(dadosNovaFerramenta, idUsuario, secao)
+    return createNovaFerramenta(dadosNovaFerramenta, fotos, idUsuario, secao)
 
 @ferramentas_router.patch("/", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
 def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session = Depends(get_session), token: str = Depends(auth_validation)):
@@ -32,7 +35,9 @@ def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session 
     return atualizaFerramenta(idUsuario, dadosFerramenta, secao)
 
 @ferramentas_router.post("/avaliar", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
-def avaliar_ferramenta(avaliacaoDados: AvaliacaoSchema, secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+def avaliar_ferramenta(avaliacaoDados: AvaliacaoSchema, 
+                       secao: Session = Depends(get_session), 
+                       _: str = Depends(auth_validation)):
 
    return avaliar(avaliacaoDados, secao)
 

@@ -2,10 +2,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, or_
 from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaFerramenta
 from src.myapp.models.Usuario import Usuario
+from src.myapp.models.Foto import Foto
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
-from fastapi import status, HTTPException
-from decimal import Decimal
+from fastapi import status, HTTPException, UploadFile
+import os, uuid
 
 def string_to_status(status: str):
     if status == StatusFerramenta.DISPONIVEL.name:
@@ -51,13 +52,43 @@ def str_to_categoria(string: str):
     return None
 
 
-def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, secao: Session):
+async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta: int):
+    os.makedirs("Fotos", exist_ok=True)
+
+    for foto in fotos:
+
+        raw = await foto.read()
+
+        ext = {"image/webp": "webp", "image/png": "png", "image/jpeg": "jpg"}[foto.content_type]
+
+        nova_foto = Foto(id_ferramenta=id_ferramenta)
+
+        secao.add(nova_foto)
+        secao.flush()
+        id_gerado = nova_foto.id
+
+        filename = f"{id_gerado}.{ext}"
+
+        path = os.path.join("Fotos", filename)
+
+        with open(path, "wb") as out:
+            out.write(raw)
+    
+    secao.commit()
+
+        
+    
+
+def createNovaFerramenta(dados: FerramentaCadastroSchema, fotos: List[UploadFile], id_propietario:int, secao: Session):
 
     novaFerramenta = Ferramenta(nome=dados.nome, diaria=dados.diaria,descricao=dados.descricao,
                categoria=str_to_categoria(dados.categoria),chave_pix=dados.chave_pix,id_proprietario=id_propietario,
                quantidade_estoque=dados.quantidade_estoque)
     
     secao.add(novaFerramenta)
+
+    registrarFotos(fotos, secao)
+
     secao.commit()
 
     return status.HTTP_201_CREATED
