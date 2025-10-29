@@ -37,6 +37,28 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
     ) , ferramentas))
 
 
+def readFerramenta(id: int, secao: Session) -> FerramentaSchema:
+
+    statement = select(Ferramenta).where(Ferramenta.id == id)
+ 
+
+    ferramentas = secao.scalars(statement).first()
+
+    return FerramentaSchema(
+        id = ferramentas.id,
+        nome = ferramentas.nome,
+        diaria = ferramentas.diaria,
+        descricao = ferramentas.descricao,
+        status = ferramentas.status,
+        categoria = ferramentas.categoria,
+        chave_pix = ferramentas.chave_pix,
+        avaliacao = ferramentas.avaliacao,
+        quantidade_avaliacoes = ferramentas.quantidade_avaliacoes,
+        id_proprietario = ferramentas.id_proprietario,
+        quantidade_estoque= ferramentas.quantidade_estoque
+    )
+
+
 def str_to_categoria(string: str):
     if string == 'MANUAL':
         return CategoriaFerramenta.MANUAL

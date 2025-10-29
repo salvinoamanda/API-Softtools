@@ -4,7 +4,7 @@ from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
-from src.myapp.services.ferramentas import readFerramentas, createNovaFerramenta, atualizaFerramenta, avaliar
+from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar
 from decimal import Decimal
 from src.myapp.services.ferramentas import excluirFerramenta
 
@@ -17,6 +17,12 @@ def getFerramentas(uf: str | None = None, status: str | None = None ,
                    secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
     
     return readFerramentas(secao, uf, status)
+
+@ferramentas_router.get("/{id}", response_model= FerramentaSchema)
+def getFerramentas(id: int, 
+                   secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+    
+    return readFerramenta(id, secao)
 
 @ferramentas_router.post("/")
 def createFerramenta(dadosNovaFerramenta: FerramentaCadastroSchema, 
