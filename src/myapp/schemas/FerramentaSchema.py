@@ -44,6 +44,21 @@ class FerramentaPreviewSchema(BaseModel):
     diaria: Decimal
     categoria: str
 
+    @model_validator(mode="after")
+    def format_enums(self):
+
+        if str(self.categoria).isnumeric():
+            map_categoria = {"0" : "MANUAL",
+                            "1" : "ELETRICA",
+                            "2" : "PNEUMATICA",
+                            "3" : "HIDRAULICA",
+                            "4" : "MEDICAO"
+                            }
+            
+            self.categoria = map_categoria[self.categoria]
+
+        return self
+
 
 
 class FerramentaCadastroSchema(BaseModel):
@@ -53,6 +68,7 @@ class FerramentaCadastroSchema(BaseModel):
     categoria: str
     chave_pix: str
     quantidade_estoque: int = 1
+
 
 class FerramentaAtualizacaoSchema(BaseModel):
     id_ferramenta: int
