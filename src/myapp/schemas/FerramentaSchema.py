@@ -1,6 +1,7 @@
 from pydantic import BaseModel, field_validator, model_validator
 from decimal import Decimal
-from typing import Optional, Annotated
+from fastapi import UploadFile
+from typing import Optional, List
 
 class FerramentaSchema(BaseModel):
     id: int
@@ -68,6 +69,7 @@ class FerramentaCadastroSchema(BaseModel):
     categoria: str
     chave_pix: str
     quantidade_estoque: int = 1
+    fotos: List[UploadFile]
 
 
 class FerramentaAtualizacaoSchema(BaseModel):

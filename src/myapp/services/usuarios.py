@@ -134,3 +134,13 @@ def getAllUsuarios(secao: Session) -> list[UsuarioSchemaPublic]:
         )
         for u in usuarios
     ]
+
+
+def getUsuario(id_usuario: int, secao: Session):
+    user = secao.scalars(select(Usuario).where(Usuario.id == id_usuario)).first()
+
+    return UsuarioSchemaPublic(id=user.id,
+                               nome=user.nome,
+                               email=user.email,
+                               telefone=user.telefone,
+                               estado=user.estado)

@@ -101,15 +101,16 @@ async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta:
         
     
 
-def createNovaFerramenta(dados: FerramentaCadastroSchema, fotos: List[UploadFile], id_propietario:int, secao: Session):
+def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, secao: Session):
 
     novaFerramenta = Ferramenta(nome=dados.nome, diaria=dados.diaria,descricao=dados.descricao,
                categoria=str_to_categoria(dados.categoria),chave_pix=dados.chave_pix,id_proprietario=id_propietario,
                quantidade_estoque=dados.quantidade_estoque)
     
     secao.add(novaFerramenta)
+    secao.flush()
 
-    registrarFotos(fotos, secao)
+    registrarFotos(dados.fotos, secao, novaFerramenta.id)
 
     secao.commit()
 

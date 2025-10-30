@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 from src.myapp.schemas.UsuarioSchema import UsuarioSchemaCadastro, UsuarioAutenticadoSchema, UsuarioSchemaPublic, UsuarioAtualizacaoSchema
-from src.myapp.services.usuarios import createUsuario, autenticacao, atualizarUsuario
+from src.myapp.services.usuarios import createUsuario, autenticacao, atualizarUsuario, getUsuario
 from http import HTTPStatus
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -46,3 +46,14 @@ async def delete_usuarios(idUsuario: int,
 @usuarios_router.get("/", response_model=list[UsuarioSchemaPublic], status_code=status.HTTP_200_OK)
 async def get_usuarios(secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
     return getAllUsuarios(secao)
+
+
+@usuarios_router.get("/{id_usuario}", response_model=UsuarioSchemaPublic, status_code=status.HTTP_200_OK)
+async def get_usuario(id_usuario: int, 
+                       secao: Session = Depends(get_session), 
+                       _: str = Depends(auth_validation)):
+    return getUsuario(id_usuario, secao)
+
+
+
+

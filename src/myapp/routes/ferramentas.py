@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, status, UploadFile, File
+from fastapi import APIRouter, Depends, status, UploadFile, File, Form
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
-from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar
 from decimal import Decimal
+from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar
 from src.myapp.services.ferramentas import excluirFerramenta
 
 ferramentas_router = APIRouter(prefix="/ferramentas")
@@ -25,14 +25,28 @@ def getFerramentas(id: int,
     return readFerramenta(id, secao)
 
 @ferramentas_router.post("/")
-def createFerramenta(dadosNovaFerramenta: FerramentaCadastroSchema, 
+def createFerramenta(nome: str = Form(...),
+                     diaria: Decimal = Form(...),
+                     descricao: str = Form(...),
+                     categoria: str = Form(...),
+                     chave_pix: str = Form(...),
+                     quantidade_estoque: int = Form(1),
                      fotos: List[UploadFile] = File(default_factory=list),
                      secao: Session = Depends(get_session), 
                      token: str = Depends(auth_validation)):
 
+
     idUsuario = getPayload(token)["id"]
 
-    return createNovaFerramenta(dadosNovaFerramenta, fotos, idUsuario, secao)
+    dadosNovaFerramenta = FerramentaCadastroSchema(nome=nome,
+                                                   diaria=diaria,
+                                                   descricao=descricao,
+                                                   categoria=categoria,
+                                                   chave_pix=chave_pix,
+                                                   quantidade_estoque=quantidade_estoque,
+                                                   fotos=fotos)
+
+    return createNovaFerramenta(dadosNovaFerramenta, idUsuario, secao)
 
 @ferramentas_router.patch("/", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
 def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session = Depends(get_session), token: str = Depends(auth_validation)):

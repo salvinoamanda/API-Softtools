@@ -36,9 +36,9 @@ class UsuarioAutenticadoSchema(UsuarioSchemaPublic):
 
 class UsuarioAtualizacaoSchema(BaseModel):
     id: int
-    email: Annotated[Optional[str], BeforeValidator(isEmpty)] = None
+    email: Annotated[Optional[EmailStr], BeforeValidator(isEmpty)] = None
     nome: Annotated[Optional[str], BeforeValidator(isEmpty)] = None
     telefone: Annotated[Optional[str], BeforeValidator(isEmpty)] = None
     senha: Annotated[Optional[str], BeforeValidator(isEmpty)] = None
-    estado: Annotated[Optional[EmailStr], BeforeValidator(isEmpty)] = None
+    estado: Annotated[Optional[str], BeforeValidator(isEmpty)] = None
 
