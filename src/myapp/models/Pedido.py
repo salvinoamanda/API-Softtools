@@ -13,3 +13,4 @@ class Pedido(Base):
     data_inicio: Mapped[datetime] = mapped_column(Date, nullable=False)
     data_devolucao: Mapped[datetime] = mapped_column(Date, nullable=False)
     alugada: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    pago: Mapped[bool] = mapped_column(Boolean, default=False)
