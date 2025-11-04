@@ -13,7 +13,7 @@ usuarios_router = APIRouter(prefix='/users')
 
 #Cadastro de usuários
 @usuarios_router.post("/", status_code= status.HTTP_201_CREATED)
-async def cadastro (dadosCadastro: UsuarioSchemaCadastro, secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+async def cadastro (dadosCadastro: UsuarioSchemaCadastro, secao: Session = Depends(get_session)):
     createUsuario(dadosCadastro, secao)
     return dadosCadastro
 
