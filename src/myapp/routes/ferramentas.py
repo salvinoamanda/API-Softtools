@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, status, UploadFile, File, Form
+from fastapi.responses import FileResponse
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
-from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
 from decimal import Decimal
 from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar, busca_foto
@@ -12,14 +13,14 @@ ferramentas_router = APIRouter(prefix="/ferramentas")
 
 #Endpoints de ferramentas
 
-@ferramentas_router.get("/", response_model= List[FerramentaSchema])
+@ferramentas_router.get("/", response_model= List[FerramentaComFotosSchema])
 def getFerramentas(uf: str | None = None, status: str | None = None , 
                    secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
     
     return readFerramentas(secao, uf, status)
 
-@ferramentas_router.get("/{id}", response_model= FerramentaSchema)
-def getFerramentas(id: int, 
+@ferramentas_router.get("/{id}", response_model= FerramentaComFotosSchema)
+def getFerramenta(id: int, 
                    secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
     
     return readFerramenta(id, secao)
@@ -66,12 +67,11 @@ def excluir_ferramenta(idFerramenta: int,
                        secao: Session = Depends(get_session),
                        _: str = Depends(auth_validation)):
     excluirFerramenta(idFerramenta, secao)
-    return None
 
 
 @ferramentas_router.get("/foto/{id_foto}")
 def get_foto(id_foto: int, 
              secao: Session = Depends(get_session), 
-             _: str = Depends(auth_validation)):
+             _: str = Depends(auth_validation)) -> FileResponse:
     
     return busca_foto(id_foto, secao)

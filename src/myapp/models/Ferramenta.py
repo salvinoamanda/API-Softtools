@@ -33,4 +33,5 @@ class Ferramenta(Base):
     ativo: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
+
     proprietario : Mapped[Usuario] = relationship('Usuario', backref='ferramentas')

@@ -7,7 +7,7 @@ class Foto(Base):
     __tablename__ = 'Foto'
     
     id: Mapped[int] = mapped_column(Integer, nullable=False, primary_key=True, autoincrement=True)
-    id_ferramenta: Mapped[int] = mapped_column(ForeignKey("ferramenta.id"), nullable=False)
+    id_ferramenta: Mapped[int] = mapped_column(ForeignKey("ferramenta.id", ondelete="CASCADE"), nullable=False)
     nome_arquivo: Mapped[str] = mapped_column(Text)
 
     ferramenta : Mapped[Ferramenta] = relationship('Ferramenta', backref='fotos')

@@ -3,7 +3,7 @@ from sqlalchemy import select, and_, or_
 from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaFerramenta
 from src.myapp.models.Usuario import Usuario
 from src.myapp.models.Foto import Foto
-from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
 from fastapi import status, HTTPException, UploadFile, Path
 from fastapi.responses import FileResponse
@@ -15,7 +15,7 @@ def string_to_status(status: str):
     
     return StatusFerramenta.ALUGADA
 
-def readFerramentas(secao: Session, uf: str | None, status : str | None = None) -> List[FerramentaSchema]:
+def readFerramentas(secao: Session, uf: str | None, status : str | None = None) -> List[FerramentaComFotosSchema]:
 
     statement = select(Ferramenta).join(Ferramenta.proprietario).where(and_(or_(Usuario.estado == uf, uf is None), 
                                                                             or_(Ferramenta.status == string_to_status(status), status is None)))
@@ -23,7 +23,13 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
 
     ferramentas = secao.scalars(statement).all()
 
-    return list(map(lambda ferramenta: FerramentaSchema(
+    schemas = []
+
+    for ferramenta in ferramentas:
+
+        fotos = secao.query(Foto).where(Foto.id_ferramenta == ferramenta.id)
+
+        schemas.append(FerramentaComFotosSchema(
         id = ferramenta.id,
         nome = ferramenta.nome,
         diaria = ferramenta.diaria,
@@ -34,18 +40,28 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
         avaliacao = ferramenta.avaliacao,
         quantidade_avaliacoes = ferramenta.quantidade_avaliacoes,
         id_proprietario = ferramenta.id_proprietario,
-        quantidade_estoque= ferramenta.quantidade_estoque
-    ) , ferramentas))
+        quantidade_estoque= ferramenta.quantidade_estoque,
+        ids_fotos = [foto.id for foto in fotos]
+        ))
+
+        print([foto.id for foto in fotos])
+
+    return schemas
 
 
-def readFerramenta(id: int, secao: Session) -> FerramentaSchema:
+
+
+
+def readFerramenta(id: int, secao: Session) -> FerramentaComFotosSchema:
 
     statement = select(Ferramenta).where(Ferramenta.id == id)
  
 
     ferramentas = secao.scalars(statement).first()
 
-    return FerramentaSchema(
+    fotos = secao.query(Foto).where(Foto.id_ferramenta == ferramentas.id)
+
+    return FerramentaComFotosSchema(
         id = ferramentas.id,
         nome = ferramentas.nome,
         diaria = ferramentas.diaria,
@@ -56,7 +72,8 @@ def readFerramenta(id: int, secao: Session) -> FerramentaSchema:
         avaliacao = ferramentas.avaliacao,
         quantidade_avaliacoes = ferramentas.quantidade_avaliacoes,
         id_proprietario = ferramentas.id_proprietario,
-        quantidade_estoque= ferramentas.quantidade_estoque
+        quantidade_estoque= ferramentas.quantidade_estoque,
+        ids_fotos = [foto.id for foto in fotos]
     )
 
 
@@ -202,7 +219,7 @@ def avaliar(dadosAvaliacao: AvaliacaoSchema, secao: Session):
 def buscaFerramentaPorID(id: int, secao: Session) -> Ferramenta | None:
 
     try:
-        ferramenta = secao.scalar(select(Ferramenta).where(Ferramenta.id == id))
+        ferramenta = secao.query(Ferramenta).where(Ferramenta.id == id).first()
         if not ferramenta:   
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ferramenta não encontrada")
         return ferramenta
@@ -214,7 +231,7 @@ def buscaFerramentaPorID(id: int, secao: Session) -> Ferramenta | None:
 # Função para excluir ferramenta
 def excluirFerramenta(idFerramenta: int, secao: Session):
     ferramenta = buscaFerramentaPorID(idFerramenta, secao)
-
+    
     secao.delete(ferramenta)
     secao.commit()
 

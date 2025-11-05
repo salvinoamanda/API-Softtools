@@ -37,6 +37,9 @@ class FerramentaSchema(BaseModel):
             self.categoria = map_categoria[self.categoria]
 
         return self
+    
+class FerramentaComFotosSchema(FerramentaSchema):
+    ids_fotos: List[int]
       
       
 
@@ -45,6 +48,7 @@ class FerramentaPreviewSchema(BaseModel):
     nome: str
     diaria: Decimal
     categoria: str
+    ids_foto: List[int]
 
     @model_validator(mode="after")
     def format_enums(self):
