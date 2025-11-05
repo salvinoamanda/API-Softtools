@@ -5,7 +5,8 @@ from src.myapp.models.Usuario import Usuario
 from src.myapp.models.Foto import Foto
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
-from fastapi import status, HTTPException, UploadFile
+from fastapi import status, HTTPException, UploadFile, Path
+from fastapi.responses import FileResponse
 import os, uuid
 
 def string_to_status(status: str):
@@ -75,8 +76,6 @@ def str_to_categoria(string: str):
 
 
 async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta: int):
-
-    print("AAAAAAAA")
     os.makedirs("Fotos", exist_ok=True)
 
     for foto in fotos:
@@ -85,13 +84,16 @@ async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta:
 
         ext = {"image/webp": "webp", "image/png": "png", "image/jpeg": "jpg"}[foto.content_type]
 
-        nova_foto = Foto(id_ferramenta=id_ferramenta)
+        nova_foto = Foto(id_ferramenta=id_ferramenta, nome_arquivo="")
 
         secao.add(nova_foto)
         secao.flush()
         id_gerado = nova_foto.id
 
         filename = f"{id_gerado}.{ext}"
+
+        nova_foto.nome_arquivo = filename
+        secao.flush()
 
         path = os.path.join("Fotos", filename)
 
@@ -215,3 +217,12 @@ def excluirFerramenta(idFerramenta: int, secao: Session):
 
     secao.delete(ferramenta)
     secao.commit()
+
+def busca_foto(id_foto: int, secao: Session) -> FileResponse:
+
+    foto = secao.query(Foto).where(Foto.id==id_foto).first()
+
+    path = os.path.join("Fotos", foto.nome_arquivo)
+
+    return FileResponse(path = path)
+

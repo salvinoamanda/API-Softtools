@@ -1,6 +1,7 @@
 from pydantic import BaseModel, field_validator, model_validator
 from decimal import Decimal
 from fastapi import UploadFile
+from fastapi.responses import FileResponse
 from typing import Optional, List
 
 class FerramentaSchema(BaseModel):

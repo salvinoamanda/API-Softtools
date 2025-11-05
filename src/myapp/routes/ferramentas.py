@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from src.myapp.schemas.FerramentaSchema import FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
 from decimal import Decimal
-from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar
+from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar, busca_foto
 from src.myapp.services.ferramentas import excluirFerramenta
 
 ferramentas_router = APIRouter(prefix="/ferramentas")
@@ -67,3 +67,11 @@ def excluir_ferramenta(idFerramenta: int,
                        _: str = Depends(auth_validation)):
     excluirFerramenta(idFerramenta, secao)
     return None
+
+
+@ferramentas_router.get("/foto/{id_foto}")
+def get_foto(id_foto: int, 
+             secao: Session = Depends(get_session), 
+             _: str = Depends(auth_validation)):
+    
+    return busca_foto(id_foto, secao)
