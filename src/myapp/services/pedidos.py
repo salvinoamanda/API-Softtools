@@ -2,8 +2,10 @@ from sqlalchemy.orm import Session
 from src.myapp.models.Pedido import Pedido
 from src.myapp.models.Ferramentas_pedido import Ferramentas_pedido
 from src.myapp.schemas.PedidoSchema import PedidoSchema
+from src.myapp.models.Historico_aluguel import Historico_aluguel
 from dotenv import load_dotenv
 import os
+from datetime import datetime
 
 load_dotenv()
 CHAVE_PIX = os.getenv("CHAVE_PIX")
@@ -27,13 +29,19 @@ def registrarPedido(dados_pedido : PedidoSchema, id_usuario: int, secao: Session
     secao.flush()
 
     relacao_ferramenta_pedido = []
+    relacao_historico = []
 
     for ferramenta in dados_pedido.ferramentas:
         relacao_ferramenta_pedido.append(Ferramentas_pedido(id_ferramenta=ferramenta.id_ferramenta,
                                                             id_pedido=novo_pedido.id,
                                                             quantidade=ferramenta.quantidade))
         
+        relacao_historico.append(Historico_aluguel( id_cliente=id_usuario,
+                                                    id_produto=ferramenta.id_ferramenta,
+                                                    timestamp=datetime.now()))
+        
     secao.add_all(relacao_ferramenta_pedido)
+    secao.add_all(relacao_historico)
     secao.flush()
     secao.commit()
 
