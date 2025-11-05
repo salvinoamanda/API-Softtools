@@ -75,6 +75,8 @@ def str_to_categoria(string: str):
 
 
 async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta: int):
+
+    print("AAAAAAAA")
     os.makedirs("Fotos", exist_ok=True)
 
     for foto in fotos:
@@ -101,7 +103,7 @@ async def registrarFotos(fotos: List[UploadFile], secao: Session, id_ferramenta:
         
     
 
-def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, secao: Session):
+async def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, secao: Session):
 
     novaFerramenta = Ferramenta(nome=dados.nome, diaria=dados.diaria,descricao=dados.descricao,
                categoria=str_to_categoria(dados.categoria),chave_pix=dados.chave_pix,id_proprietario=id_propietario,
@@ -110,7 +112,7 @@ def createNovaFerramenta(dados: FerramentaCadastroSchema, id_propietario:int, se
     secao.add(novaFerramenta)
     secao.flush()
 
-    registrarFotos(dados.fotos, secao, novaFerramenta.id)
+    await registrarFotos(dados.fotos, secao, novaFerramenta.id)
 
     secao.commit()
 

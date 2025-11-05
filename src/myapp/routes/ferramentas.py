@@ -25,7 +25,7 @@ def getFerramentas(id: int,
     return readFerramenta(id, secao)
 
 @ferramentas_router.post("/")
-def createFerramenta(nome: str = Form(...),
+async def createFerramenta(nome: str = Form(...),
                      diaria: Decimal = Form(...),
                      descricao: str = Form(...),
                      categoria: str = Form(...),
@@ -46,7 +46,7 @@ def createFerramenta(nome: str = Form(...),
                                                    quantidade_estoque=quantidade_estoque,
                                                    fotos=fotos)
 
-    return createNovaFerramenta(dadosNovaFerramenta, idUsuario, secao)
+    return await createNovaFerramenta(dadosNovaFerramenta, idUsuario, secao)
 
 @ferramentas_router.patch("/", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
 def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session = Depends(get_session), token: str = Depends(auth_validation)):
