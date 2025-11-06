@@ -3,7 +3,8 @@ from sqlalchemy import select, and_, or_
 from src.myapp.models.Ferramenta import Ferramenta, StatusFerramenta, CategoriaFerramenta
 from src.myapp.models.Usuario import Usuario
 from src.myapp.models.Foto import Foto
-from src.myapp.schemas.FerramentaSchema import FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaComFotos_avaliacao_Schema, FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
+from src.myapp.models.Avaliacao_usuario_ferramenta import Avaliacao_usuario_ferramenta
 from typing import List
 from fastapi import status, HTTPException, UploadFile, Path
 from fastapi.responses import FileResponse
@@ -52,16 +53,28 @@ def readFerramentas(secao: Session, uf: str | None, status : str | None = None) 
 
 
 
-def readFerramenta(id: int, secao: Session) -> FerramentaComFotosSchema:
+def readFerramenta(id: int, id_usuario:int, secao: Session) -> FerramentaComFotosSchema:
 
     statement = select(Ferramenta).where(Ferramenta.id == id)
- 
+    
+    relacao = (
+        secao.query(Avaliacao_usuario_ferramenta)
+        .filter(
+            (Avaliacao_usuario_ferramenta.id_cliente == id_usuario) &
+            (Avaliacao_usuario_ferramenta.id_produto == id)
+        )
+        .one_or_none()
+    )
+
+   
+    avaliacao_usuario = relacao.avaliacao if relacao is not None else None
+
 
     ferramentas = secao.scalars(statement).first()
 
     fotos = secao.query(Foto).where(Foto.id_ferramenta == ferramentas.id)
 
-    return FerramentaComFotosSchema(
+    return FerramentaComFotos_avaliacao_Schema(
         id = ferramentas.id,
         nome = ferramentas.nome,
         diaria = ferramentas.diaria,
@@ -73,7 +86,8 @@ def readFerramenta(id: int, secao: Session) -> FerramentaComFotosSchema:
         quantidade_avaliacoes = ferramentas.quantidade_avaliacoes,
         id_proprietario = ferramentas.id_proprietario,
         quantidade_estoque= ferramentas.quantidade_estoque,
-        ids_fotos = [foto.id for foto in fotos]
+        ids_fotos = [foto.id for foto in fotos],
+        sua_avaliacao=avaliacao_usuario
     )
 
 
@@ -186,7 +200,16 @@ def atualizaFerramenta(id_usuario: int, dadosFerramenta: FerramentaAtualizacaoSc
                             id_proprietario= ferramenta.id_proprietario,
                             quantidade_estoque = ferramenta.quantidade_estoque)
 
-def avaliar(dadosAvaliacao: AvaliacaoSchema, secao: Session):
+def avaliar(dadosAvaliacao: AvaliacaoSchema, id_usuario: int, secao: Session):
+
+    relacao = (
+        secao.query(Avaliacao_usuario_ferramenta)
+        .filter(
+            (Avaliacao_usuario_ferramenta.id_cliente == id_usuario) &
+            (Avaliacao_usuario_ferramenta.id_produto == dadosAvaliacao.id_ferramenta)
+        )
+        .one_or_none()
+    )
 
     ferramenta = secao.query(Ferramenta).filter(Ferramenta.id == dadosAvaliacao.id_ferramenta).first()
 
@@ -199,6 +222,15 @@ def avaliar(dadosAvaliacao: AvaliacaoSchema, secao: Session):
     ferramenta.quantidade_avaliacoes += 1
 
     ferramenta.avaliacao = nova_avaliacao
+
+    if(relacao is not None):
+        relacao.avaliacao = dadosAvaliacao.avaliacao
+    else:
+        model_relacao = Avaliacao_usuario_ferramenta(id_cliente=id_usuario,
+                                                    id_produto=ferramenta.id,
+                                                    avalicao=dadosAvaliacao.avaliacao)
+        
+        secao.add(model_relacao)
 
     secao.commit()
     secao.refresh(ferramenta)

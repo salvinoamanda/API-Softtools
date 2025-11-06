@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse
 from src.myapp.database import get_session
 from src.myapp.security import auth_validation, getPayload
 from sqlalchemy.orm import Session
-from src.myapp.schemas.FerramentaSchema import FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
+from src.myapp.schemas.FerramentaSchema import FerramentaComFotos_avaliacao_Schema, FerramentaComFotosSchema, FerramentaSchema, FerramentaCadastroSchema, AvaliacaoSchema, FerramentaAtualizacaoSchema
 from typing import List
 from decimal import Decimal
 from src.myapp.services.ferramentas import readFerramentas, readFerramenta, createNovaFerramenta, atualizaFerramenta, avaliar, busca_foto
@@ -19,11 +19,12 @@ def getFerramentas(uf: str | None = None, status: str | None = None ,
     
     return readFerramentas(secao, uf, status)
 
-@ferramentas_router.get("/{id}", response_model= FerramentaComFotosSchema)
+@ferramentas_router.get("/{id}", response_model= FerramentaComFotos_avaliacao_Schema)
 def getFerramenta(id: int, 
-                   secao: Session = Depends(get_session), _: str = Depends(auth_validation)):
+                   secao: Session = Depends(get_session), token: str = Depends(auth_validation)):
     
-    return readFerramenta(id, secao)
+    idUsuario = getPayload(token)["id"]
+    return readFerramenta(id, idUsuario, secao)
 
 @ferramentas_router.post("/")
 async def createFerramenta(nome: str = Form(...),
@@ -58,9 +59,11 @@ def att_ferramenta(dadosFerramenta: FerramentaAtualizacaoSchema, secao: Session 
 @ferramentas_router.post("/avaliar", response_model=FerramentaSchema, status_code=status.HTTP_202_ACCEPTED)
 def avaliar_ferramenta(avaliacaoDados: AvaliacaoSchema, 
                        secao: Session = Depends(get_session), 
-                       _: str = Depends(auth_validation)):
+                       token: str = Depends(auth_validation)):
+    
+   idUsuario = getPayload(token)["id"]
 
-   return avaliar(avaliacaoDados, secao)
+   return avaliar(avaliacaoDados, idUsuario, secao)
 
 @ferramentas_router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def excluir_ferramenta(idFerramenta: int,

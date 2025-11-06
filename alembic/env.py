@@ -22,6 +22,7 @@ from src.myapp.models.Foto import Foto
 from src.myapp.models.Historico_aluguel import Historico_aluguel
 from src.myapp.models.Pedido import Pedido
 from src.myapp.models.Usuario import Usuario
+from src.myapp.models.Avaliacao_usuario_ferramenta import Avaliacao_usuario_ferramenta
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

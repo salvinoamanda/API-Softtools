@@ -1,7 +1,6 @@
 from pydantic import BaseModel, field_validator, model_validator
 from decimal import Decimal
 from fastapi import UploadFile
-from fastapi.responses import FileResponse
 from typing import Optional, List
 
 class FerramentaSchema(BaseModel):
@@ -40,8 +39,12 @@ class FerramentaSchema(BaseModel):
     
 class FerramentaComFotosSchema(FerramentaSchema):
     ids_fotos: List[int]
-      
-      
+
+
+class FerramentaComFotos_avaliacao_Schema(FerramentaComFotosSchema):
+    sua_avaliacao: Decimal | None
+
+
 
 class FerramentaPreviewSchema(BaseModel):
     id: int
